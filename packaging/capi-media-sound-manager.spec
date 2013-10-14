@@ -38,6 +38,8 @@ make %{?jobs:-j%jobs}
 
 %install
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/license
+cp LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
 %make_install
 
 %post -p /sbin/ldconfig
@@ -48,6 +50,7 @@ rm -rf %{buildroot}
 %files
 %{_libdir}/libcapi-media-sound-manager.so.*
 %manifest capi-media-sound-manager.manifest
+/usr/share/license/%{name}
 
 %files devel
 %{_includedir}/media/sound_manager.h
