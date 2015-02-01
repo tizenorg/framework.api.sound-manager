@@ -14,30 +14,26 @@
 * limitations under the License.
 */
 
-#ifndef __TIZEN_MEDIA_SOUND_MANAGER_PRIVATE_H__
-#define __TIZEN_MEDIA_SOUND_MANAGER_PRIVATE_H__
+#ifndef __TIZEN_MEDIA_SOUND_MANAGER_INTERNAL_H__
+#define __TIZEN_MEDIA_SOUND_MANAGER_INTERNAL_H__
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct sound_call_session_s
-{
-	int previous_session;
-};
+#define SOUND_TYPE_NUM                SOUND_TYPE_VOICE + 1
+#define SOUND_CALL_SESSION_MODE_NUM   SOUND_CALL_SESSION_MODE_VOICE_CALL_FORWARDING + 1
+#define SOUND_SESSION_WATCH_TYPE_NUM  SOUND_SESSION_WATCH_TYPE_ALARM + 1
+#define SOUND_SESSION_WATCH_STATE_NUM SOUND_SESSION_WATCH_STATE_START + 1
 
-struct sound_multi_session_s
-{
-	int previous_session;
-	sound_multi_session_type_e type;
-	int type_option;
-};
-
-int __convert_sound_manager_error_code(const char *func, int code);
+/**
+ * @file sound_manager_internal.h
+ * @brief This file contains the Sound Manager API (internal header)
+ */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TIZEN_MEDIA_SOUND_MANAGER_PRIVATE_H__ */
+#endif /* __TIZEN_MEDIA_SOUND_MANAGER_INTERNAL_H__ */

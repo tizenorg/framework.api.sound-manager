@@ -20,17 +20,15 @@
 #include <mm_sound.h>
 #include <dlog.h>
 
+extern _session_interrupt_info_s g_session_interrupt_cb_table;
+
 int __convert_sound_manager_error_code(const char *func, int code) {
 	int ret = SOUND_MANAGER_ERROR_NONE;
 	char *errorstr = NULL;
 
 	switch(code)
 	{
-		case SOUND_MANAGER_ERROR_INVALID_PARAMETER:
-			ret = SOUND_MANAGER_ERROR_INVALID_PARAMETER;
-			errorstr = "INVALID_PARAMETER";
-			break;
-		case SOUND_MANAGER_ERROR_INVALID_OPERATION:
+		case MM_ERROR_FILE_WRITE:
 		case MM_ERROR_INVALID_HANDLE:
 			ret = SOUND_MANAGER_ERROR_INVALID_OPERATION;
 			errorstr = "INVALID_OPERATION";
@@ -44,7 +42,16 @@ int __convert_sound_manager_error_code(const char *func, int code) {
 			ret = SOUND_MANAGER_ERROR_INVALID_PARAMETER;
 			errorstr = "INVALID_PARAMETER";
 			break;
+		case MM_ERROR_SOUND_PERMISSION_DENIED:
+			ret = SOUND_MANAGER_ERROR_PERMISSION_DENIED;
+			errorstr = "PERMISSION_DENIED";
+			break;
+		case MM_ERROR_SOUND_NO_DATA:
+			ret = SOUND_MANAGER_ERROR_NO_DATA;
+			errorstr = "NO_DATA";
+			break;
 		case MM_ERROR_SOUND_INTERNAL:
+		case MM_ERROR_SOUND_VOLUME_CAPTURE_ONLY:
 			ret = SOUND_MANAGER_ERROR_INTERNAL;
 			errorstr = "INTERNAL";
 			break;
@@ -54,27 +61,48 @@ int __convert_sound_manager_error_code(const char *func, int code) {
 			ret = SOUND_MANAGER_ERROR_POLICY;
 			errorstr = "POLICY";
 			break;
-		case MM_ERROR_POLICY_BLOCKED_BY_CALL:
-			ret = SOUND_MANAGER_ERROR_POLICY_BLOCKED_BY_CALL;
-			errorstr = "POLICY_BLOCKED_BY_CALL";
-			break;
-		case MM_ERROR_POLICY_BLOCKED_BY_ALARM:
-			ret = SOUND_MANAGER_ERROR_POLICY_BLOCKED_BY_ALARM;
-			errorstr = "POLICY_BLOCKED_BY_ALARM";
-			break;
 		case MM_ERROR_SOUND_VOLUME_NO_INSTANCE:
 			ret = SOUND_MANAGER_ERROR_NO_PLAYING_SOUND;
 			errorstr = "NO_PLAYING_SOUND";
 			break;
-		case MM_ERROR_SOUND_VOLUME_CAPTURE_ONLY:
-			ret = SOUND_MANAGER_ERROR_CAPTURE_ONLY;
-			errorstr = "CAPTURE_ONLY";
-			break;
-		case MM_ERROR_SOUND_VOLUME_BLOCKED_BY_SAFETY:
-			ret = SOUND_MANAGER_ERROR_NO_OPERATION;
-			errorstr = "NO_OPERATION";
-			break;
 	}
 	LOGE("[%s] %s(0x%08x) : core frameworks error code(0x%08x)",func, errorstr, ret, code);
 	return ret;
+}
+
+void __session_interrupt_cb(session_msg_t msg, session_event_t event, void *user_data){
+	if( g_session_interrupt_cb_table.user_cb ){
+		sound_session_interrupted_code_e e = SOUND_SESSION_INTERRUPTED_COMPLETED;
+		if( msg == MM_SESSION_MSG_RESUME )
+			e = SOUND_SESSION_INTERRUPTED_COMPLETED;
+		else{
+			switch(event){
+				case MM_SESSION_EVENT_MEDIA :
+					e = SOUND_SESSION_INTERRUPTED_BY_MEDIA;
+					break;
+				case MM_SESSION_EVENT_CALL :
+					e = SOUND_SESSION_INTERRUPTED_BY_CALL;
+					break;
+				case MM_SESSION_EVENT_ALARM :
+					e = SOUND_SESSION_INTERRUPTED_BY_ALARM;
+					break;
+				case MM_SESSION_EVENT_EARJACK_UNPLUG:
+					e = SOUND_SESSION_INTERRUPTED_BY_EARJACK_UNPLUG;
+					break;
+				case MM_SESSION_EVENT_RESOURCE_CONFLICT:
+					e = SOUND_SESSION_INTERRUPTED_BY_RESOURCE_CONFLICT;
+					break;
+				case MM_SESSION_EVENT_EMERGENCY:
+					e = SOUND_SESSION_INTERRUPTED_BY_EMERGENCY;
+					break;
+				case MM_SESSION_EVENT_NOTIFICATION :
+					e = SOUND_SESSION_INTERRUPTED_BY_NOTIFICATION;
+					break;
+				default :
+					e = SOUND_SESSION_INTERRUPTED_BY_MEDIA;
+					break;
+			}
+		}
+		g_session_interrupt_cb_table.user_cb(e, g_session_interrupt_cb_table.user_data);
+	}
 }
