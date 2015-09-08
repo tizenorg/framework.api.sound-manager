@@ -18,7 +18,6 @@ SET(Services
 SET(project_prefix "capi")
 SET(prefix "/usr")
 SET(version "0.0.1")
-SET(maintainer "Seungkeun Lee <sngn.lee@samsung.com>, Kangho Hur<kagho.hur@samsung.com>")
 SET(description "A Sound Manager library in Tizen Native API")
 SET(service "media")
 SET(submodule "sound-manager")
@@ -91,7 +90,7 @@ CONFIGURE_FILE(
 )
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${fw_name}.pc DESTINATION lib/pkgconfig)
 
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
 
 IF(UNIX)
 
