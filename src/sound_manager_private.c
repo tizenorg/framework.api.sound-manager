@@ -23,7 +23,7 @@
 extern _session_interrupt_info_s g_session_interrupt_cb_table;
 extern _session_mode_e g_cached_session_mode;
 
-int __convert_sound_manager_error_code(const char *func, int code) {
+int __convert_sound_manager_error_code(const char *func, int line, int code) {
 	int ret = SOUND_MANAGER_ERROR_NONE;
 	char *errorstr = NULL;
 
@@ -67,7 +67,7 @@ int __convert_sound_manager_error_code(const char *func, int code) {
 			errorstr = "NO_PLAYING_SOUND";
 			break;
 	}
-	LOGE("[%s] %s(0x%08x) : core frameworks error code(0x%08x)",func, errorstr, ret, code);
+	LOGE("[%s(%d)] %s(0x%08x) : core frameworks error code(0x%08x)",func, line, errorstr, ret, code);
 	return ret;
 }
 
@@ -116,6 +116,10 @@ int __set_session_mode(_session_mode_e mode)
 	bool do_subsession = true;
 
 	switch (mode) {
+		case _SESSION_MODE_NONE:
+			/* it can not be reached here */
+			ret = MM_ERROR_SOUND_INTERNAL;
+			goto ERROR_CASE;
 		case _SESSION_MODE_RINGTONE:
 			if (g_cached_session_mode != mode) {
 				/* sub-session */
@@ -149,7 +153,7 @@ int __set_session_mode(_session_mode_e mode)
 		MMSoundDevice_t device;
 		do_subsession = false;
 
-		ret = mm_sound_get_current_device_list(MM_SOUND_DEVICE_STATE_DEACTIVATED_FLAG, &device_list);
+		ret = mm_sound_get_current_device_list(MM_SOUND_DEVICE_ALL_FLAG, &device_list);
 		if (ret != MM_ERROR_NONE) {
 			goto ERROR_CASE;
 		} else {
@@ -168,6 +172,8 @@ int __set_session_mode(_session_mode_e mode)
 								goto ERROR_CASE;
 							if (io_direction == MM_SOUND_DEVICE_IO_DIRECTION_BOTH)
 								route = MM_SOUND_ROUTE_INOUT_HEADSET;
+							else if (io_direction == MM_SOUND_DEVICE_IO_DIRECTION_OUT)
+								route = MM_SOUND_ROUTE_IN_MIC_OUT_HEADPHONE;
 							do_subsession = true;
 						}
 						break;
@@ -177,8 +183,10 @@ int __set_session_mode(_session_mode_e mode)
 							ret = mm_sound_get_device_io_direction(device, &io_direction);
 							if (ret != MM_ERROR_NONE)
 								goto ERROR_CASE;
-							if (io_direction == MM_SOUND_DEVICE_IO_DIRECTION_BOTH)
+							if (io_direction == MM_SOUND_DEVICE_IO_DIRECTION_BOTH) {
+								route = MM_SOUND_ROUTE_INOUT_BLUETOOTH;
 								do_subsession = true;
+							}
 						}
 						break;
 					default:
@@ -212,6 +220,12 @@ int __get_session_mode(_session_mode_e *mode)
 {
 	int ret = MM_ERROR_NONE;
 	int subsession = 0;
+
+	if (g_cached_session_mode == _SESSION_MODE_NONE) {
+		ret = MM_ERROR_POLICY_INTERNAL;
+		goto ERROR_CASE;
+	}
+
 	ret = mm_session_get_subsession ((mm_subsession_t *)&subsession);
 	if(ret != MM_ERROR_NONE) {
 		goto ERROR_CASE;

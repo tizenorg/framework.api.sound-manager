@@ -19,6 +19,7 @@
 #include <stdlib.h>
 
 #include <sound_manager.h>
+#include <sound_manager_internal.h>
 #include <pthread.h>
 #include <glib.h>
 //#include <dlfcn.h>
@@ -45,6 +46,7 @@ enum
 	CURRENT_STATUS_GET_MEDIA_SESSION_RESUMPTION_OPTION,
 	CURRENT_STATUS_SET_VOIP_SESSION_MODE,
 	CURRENT_STATUS_GET_VOIP_SESSION_MODE,
+	CURRENT_STATUS_SET_SESSION_TYPE_INTERNAL,
 	CURRENT_STATUS_SET_CALL_SESSION_MODE,
 	CURRENT_STATUS_GET_CALL_SESSION_MODE,
 	CURRENT_STATUS_SET_SESSION_INTERRUPTED_CB,
@@ -105,6 +107,10 @@ void _interpret_main_menu(char *cmd)
 		else if (strncmp(cmd, "uv", 2) == 0)
 		{
 			g_menu_state = CURRENT_STATUS_UNSET_VOLUME_CHANGED_CB;
+		}
+		else if (strncmp(cmd, "sn", 2) == 0 )
+		{
+			g_menu_state = CURRENT_STATUS_SET_SESSION_TYPE_INTERNAL;
 		}
 		else if (strncmp(cmd, "ss", 2) == 0 )
 		{
@@ -229,6 +235,7 @@ void display_sub_basic()
 	g_print("gr. Get Media Session Resumption Option \n");
 	g_print("so. Set Voip Session Mode \t");
 	g_print("go. Get Voip Session Mode \n");
+	g_print("sn. Set Session Type Internal\t");
 	g_print("sl. Set Call Session Mode \t");
 	g_print("gc. Get Call Session Mode \n");
 	g_print("sc. Set Session Interruped CB \t");
@@ -293,7 +300,7 @@ static void displaymenu()
 	}
 	else if (g_menu_state == CURRENT_STATUS_SET_SESSION_TYPE) 
 	{
-		g_print("*** input session type(0:MEDIA, 1:ALARM, 2:NOTIFICATION, 3:EMERGENCY, 4:VOIP, 5:CALL)\n");
+		g_print("*** input session type(0:MEDIA, 1:ALARM, 2:NOTIFICATION, 3:EMERGENCY, 4:VOIP)\n");
 	}	
 	else if (g_menu_state == CURRENT_STATUS_GET_SESSION_TYPE)
 	{
@@ -324,6 +331,10 @@ static void displaymenu()
 	else if (g_menu_state == CURRENT_STATUS_GET_VOIP_SESSION_MODE)
 	{
 		g_print("*** press enter to get voip session mode\n");
+	}
+	else if (g_menu_state == CURRENT_STATUS_SET_SESSION_TYPE_INTERNAL)
+	{
+		g_print("*** input session type(0:CALL, 1:VIDEO_CALL)\n");
 	}
 	else if (g_menu_state == CURRENT_STATUS_SET_CALL_SESSION_MODE)
 	{
@@ -466,12 +477,29 @@ int convert_session_type(sound_session_type_e *type, char *cmd)
 				case 4:
 					*type = SOUND_SESSION_TYPE_VOIP;
 					break;
-				case 5:
-					*type = SOUND_SESSION_TYPE_CALL;
-					break;
 			}
 		}
 	return 1;
+}
+
+int convert_session_type_internal(sound_session_type_internal_e *type, char *cmd)
+{
+	int ret = 0;
+	int session_type_n = atoi(cmd);
+	switch (session_type_n)
+	{
+		case 0:
+			*type = SOUND_SESSION_TYPE_CALL;
+			ret = 1;
+			break;
+		case 1:
+			*type = SOUND_SESSION_TYPE_VIDEOCALL;
+			ret = 1;
+			break;
+		default:
+			break;
+	}
+	return ret;
 }
 
 void _set_volume_changed_cb(sound_type_e type, unsigned int volume, void *user_data)
@@ -797,6 +825,19 @@ static void interpret (char *cmd)
 				g_print("fail to get voip session mode, ret[0x%x]\n", ret);
 			else
 				g_print("success to get voip session mode, mode[%d]\n", mode);
+			reset_menu_state();
+		}
+		break;
+		case CURRENT_STATUS_SET_SESSION_TYPE_INTERNAL:
+		{
+			static sound_session_type_internal_e type;
+			if(convert_session_type_internal(&type, cmd) == 1)
+			{
+				if(sound_manager_set_session_type_internal(type) != 0)
+					g_print("fail to set session type\n");
+				else
+					g_print("success to set session type(%d)\n",type);
+			}
 			reset_menu_state();
 		}
 		break;

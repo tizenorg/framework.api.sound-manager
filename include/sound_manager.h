@@ -36,7 +36,7 @@ extern "C"
 
 /**
  * @brief Enumeration for sound manager's error codes.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
 typedef enum
 {
@@ -59,18 +59,18 @@ typedef enum
 
 /**
  * @brief Enumeration for sound type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
 typedef enum
 {
-    SOUND_TYPE_SYSTEM,          /**< Sound type for system */
-    SOUND_TYPE_NOTIFICATION,    /**< Sound type for notifications */
-    SOUND_TYPE_ALARM,           /**< Sound type for alarm */
-    SOUND_TYPE_RINGTONE,        /**< @internal Sound type for ringtones */
-    SOUND_TYPE_MEDIA,           /**< Sound type for media */
-    SOUND_TYPE_CALL,            /**< @internal Sound type for call */
-    SOUND_TYPE_VOIP,            /**< @internal Sound type for voip */
-    SOUND_TYPE_VOICE,           /**< Sound type for voice */
+	SOUND_TYPE_SYSTEM,          /**< Sound type for system */
+	SOUND_TYPE_NOTIFICATION,    /**< Sound type for notifications */
+	SOUND_TYPE_ALARM,           /**< Sound type for alarm */
+	SOUND_TYPE_RINGTONE,        /**< Sound type for ringtones (Since 2.4) */
+	SOUND_TYPE_MEDIA,           /**< Sound type for media */
+	SOUND_TYPE_CALL,            /**< Sound type for call (Since 2.4) */
+	SOUND_TYPE_VOIP,            /**< Sound type for voip (Since 2.4) */
+	SOUND_TYPE_VOICE,           /**< Sound type for voice */
 } sound_type_e;
 
 /**
@@ -84,54 +84,48 @@ typedef enum
 
 /**
  * @brief Enumeration for session type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
+typedef enum {
 	SOUND_SESSION_TYPE_MEDIA = 0,		/**< Media type */
 	SOUND_SESSION_TYPE_ALARM,			/**< Alarm type */
 	SOUND_SESSION_TYPE_NOTIFICATION,		/**< Notification type */
 	SOUND_SESSION_TYPE_EMERGENCY,			/**< Emergency type */
 	SOUND_SESSION_TYPE_VOIP,			/**< VOIP type */
-	SOUND_SESSION_TYPE_CALL,			/**< @internal Call type */
 } sound_session_type_e;
 
 /**
  * @brief Enumeration for session option for starting.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
+typedef enum {
 	SOUND_SESSION_OPTION_MIX_WITH_OTHERS_WHEN_START = 0, /**< This session will be mixed with others when starting (default) */
 	SOUND_SESSION_OPTION_PAUSE_OTHERS_WHEN_START,        /**< This session will interrupt other sessions when starting */
 } sound_session_option_for_starting_e;
 
 /**
  * @brief Enumeration for session option during play.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
+typedef enum {
 	SOUND_SESSION_OPTION_INTERRUPTIBLE_DURING_PLAY = 0,  /**< This session will be interrupted by other sessions during play (default) */
 	SOUND_SESSION_OPTION_UNINTERRUPTIBLE_DURING_PLAY,    /**< This session will not be interrupted by other media sessions */
 } sound_session_option_for_during_play_e;
 
 /**
  * @brief Enumeration for session option for resumption.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
+typedef enum {
 	SOUND_SESSION_OPTION_RESUMPTION_BY_SYSTEM = 0,             /**< This session will be resumed according to system policy (default) */
 	SOUND_SESSION_OPTION_RESUMPTION_BY_SYSTEM_OR_MEDIA_PAUSED, /**< This session will be resumed according to system policy and when the media session which interrupted this session is paused */
 } sound_session_option_for_resumption_e;
 
 /**
  * @brief Enumeration for voip session mode.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
+typedef enum {
 	SOUND_SESSION_VOIP_MODE_RINGTONE = 0,                /**< voip mode for ringtone */
 	SOUND_SESSION_VOIP_MODE_VOICE_WITH_BUILTIN_RECEIVER, /**< voip mode for during call with built-in receiver */
 	SOUND_SESSION_VOIP_MODE_VOICE_WITH_BUILTIN_SPEAKER,  /**< voip mode for during call with built-in speaker */
@@ -140,45 +134,30 @@ typedef enum
 } sound_session_voip_mode_e;
 
 /**
- * @internal
- * @brief Enumeration for call session mode.
- * @since_tizen 2.3
- */
-typedef enum
-{
-	SOUND_SESSION_CALL_MODE_RINGTONE = 0,                /**< @internal call mode for ringtone */
-	SOUND_SESSION_CALL_MODE_VOICE_WITH_BUILTIN_RECEIVER, /**< @internal call mode for during call with built-in receiver */
-	SOUND_SESSION_CALL_MODE_VOICE_WITH_BUILTIN_SPEAKER,  /**< @internal call mode for during call with built-in speaker */
-	SOUND_SESSION_CALL_MODE_VOICE_WITH_AUDIO_JACK,       /**< @internal call mode for during call with audio jack */
-	SOUND_SESSION_CALL_MODE_VOICE_WITH_BLUETOOTH,        /**< @internal call mode for during call with bluetooth */
-} sound_session_call_mode_e;
-
-/**
  * @brief Enumeration for sound session interrupted type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
-typedef enum
-{
-	SOUND_SESSION_INTERRUPTED_COMPLETED = 0, 				/**< Interrupt completed*/
-	SOUND_SESSION_INTERRUPTED_BY_MEDIA, 				/**< Interrupted by media application*/
-	SOUND_SESSION_INTERRUPTED_BY_CALL,						/**< Interrupted by an incoming call*/
-	SOUND_SESSION_INTERRUPTED_BY_EARJACK_UNPLUG,			/**< Interrupted by unplugging headphones*/
-	SOUND_SESSION_INTERRUPTED_BY_RESOURCE_CONFLICT,		/**< Interrupted by a resource conflict*/
-	SOUND_SESSION_INTERRUPTED_BY_ALARM,					/**< Interrupted by an alarm*/
-	SOUND_SESSION_INTERRUPTED_BY_EMERGENCY,					/**< Interrupted by an emergency*/
-	SOUND_SESSION_INTERRUPTED_BY_NOTIFICATION,					/**< Interrupted by a notification*/
+typedef enum {
+	SOUND_SESSION_INTERRUPTED_COMPLETED = 0,        /**< Interrupt completed*/
+	SOUND_SESSION_INTERRUPTED_BY_MEDIA,             /**< Interrupted by media application*/
+	SOUND_SESSION_INTERRUPTED_BY_CALL,	              /**< Interrupted by an incoming call*/
+	SOUND_SESSION_INTERRUPTED_BY_EARJACK_UNPLUG,    /**< Interrupted by unplugging headphones*/
+	SOUND_SESSION_INTERRUPTED_BY_RESOURCE_CONFLICT, /**< Interrupted by a resource conflict*/
+	SOUND_SESSION_INTERRUPTED_BY_ALARM,             /**< Interrupted by an alarm*/
+	SOUND_SESSION_INTERRUPTED_BY_EMERGENCY,         /**< Interrupted by an emergency*/
+	SOUND_SESSION_INTERRUPTED_BY_NOTIFICATION,      /**< Interrupted by a notification*/
 } sound_session_interrupted_code_e;
 
 /**
  * @brief Called when the playing sound session is interrupted.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]   code	The interrupted code
  * @param[in]   user_data	The user data passed from the callback registration function
  * @pre You should register this callback using sound_manager_set_session_interrupted_cb().
  * @see sound_manager_set_session_interrupted_cb()
  * @see sound_manager_unset_session_interrupted_cb()
  */
-typedef void(* sound_session_interrupted_cb)(sound_session_interrupted_code_e code, void *user_data);
+typedef void (* sound_session_interrupted_cb) (sound_session_interrupted_code_e code, void *user_data);
 
 /**
  * @}
@@ -190,22 +169,22 @@ typedef void(* sound_session_interrupted_cb)(sound_session_interrupted_code_e co
  */
 
 /**
- * @brief sound device handle
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @brief Sound device handle.
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
 typedef void* sound_device_h;
 
 /**
- * @brief sound device list handle
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @brief Sound device list handle.
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  */
 typedef void* sound_device_list_h;
 
 /**
 * @brief Enumeration for sound device type.
-* @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+* @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
 */
-typedef enum{
+typedef enum {
 	SOUND_DEVICE_BUILTIN_SPEAKER,   /**< Built-in speaker */
 	SOUND_DEVICE_BUILTIN_RECEIVER,  /**< Built-in receiver */
 	SOUND_DEVICE_BUILTIN_MIC,       /**< Built-in mic */
@@ -218,7 +197,7 @@ typedef enum{
 
 /**
 * @brief Enumeration for sound device direction.
-* @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+* @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
 */
 typedef enum {
 	SOUND_DEVICE_IO_DIRECTION_IN,   /**< Input device */
@@ -229,7 +208,7 @@ typedef enum {
 
 /**
 * @brief Enumeration for sound device state.
-* @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+* @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
 */
 typedef enum {
 	SOUND_DEVICE_STATE_DEACTIVATED, /**< Deactivated state */
@@ -238,7 +217,7 @@ typedef enum {
 
 /**
 * @brief Enumeration for sound device mask.
-* @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+* @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
 */
 typedef enum {
 	SOUND_DEVICE_IO_DIRECTION_IN_MASK      = 0x0001,  /**< Mask for input devices */
@@ -253,28 +232,28 @@ typedef enum {
 
 /**
 * @brief Enumeration for changed information of sound device.
-* @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+* @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
 */
 typedef enum {
-	SOUND_DEVICE_CAHNGED_INFO_STATE,           /**< State of the device was changed */
+	SOUND_DEVICE_CHANGED_INFO_STATE,           /**< State of the device was changed */
 	SOUND_DEVICE_CHANGED_INFO_IO_DIRECTION,    /**< IO direction of the device was changed */
 } sound_device_changed_info_e;
 
 /**
  * @brief Called when the state of connection of a sound device was changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]   sound_device_h	The sound_device
- * @param[in]   is_connected	The state of device connection
+ * @param[in]   is_connected	The state of device connection: (@c true = connected, @c false = disconnected)
  * @param[in]   user_data	The user data passed from the callback registration function
  * @pre You should register this callback using sound_manager_set_device_connected_cb().
  * @see sound_manager_set_device_connected_cb()
  * @see sound_manager_unset_device_connected_cb()
  */
-typedef void(* sound_device_connected_cb)(sound_device_h device, bool is_connected, void *user_data);
+typedef void (* sound_device_connected_cb) (sound_device_h device, bool is_connected, void *user_data);
 
 /**
  * @brief Called when the information of a sound device was changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]   sound_device_h	The sound_device
  * @param[in]   changed_info	The entry of sound device information
  * @param[in]   user_data	The user data passed from the callback registration function
@@ -282,7 +261,7 @@ typedef void(* sound_device_connected_cb)(sound_device_h device, bool is_connect
  * @see sound_manager_set_device_information_changed_cb()
  * @see sound_manager_unset_device_information_changed_cb()
  */
-typedef void(* sound_device_information_changed_cb)(sound_device_h device, sound_device_changed_info_e changed_info, void *user_data);
+typedef void (* sound_device_information_changed_cb) (sound_device_h device, sound_device_changed_info_e changed_info, void *user_data);
 
 /**
  * @}
@@ -295,7 +274,7 @@ typedef void(* sound_device_information_changed_cb)(sound_device_h device, sound
 
 /**
  * @brief Called when the system volume has changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]   type	The sound type of the changed volume
  * @param[in]   volume	The new volume value
  * @param[in]   user_data	The user data passed from the callback registration function
@@ -303,11 +282,11 @@ typedef void(* sound_device_information_changed_cb)(sound_device_h device, sound
  * @see sound_manager_set_volume_changed_cb()
  * @see sound_manager_unset_volume_changed_cb()
  */
-typedef void (*sound_manager_volume_changed_cb)(sound_type_e type, unsigned int volume, void *user_data);
+typedef void (*sound_manager_volume_changed_cb) (sound_type_e type, unsigned int volume, void *user_data);
 
 /**
  * @brief Gets the maximum volume level supported for a particular sound type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]		type The sound type
  * @param[out]	max	The maximum volume level
  * @return @c 0 on success,
@@ -317,11 +296,11 @@ typedef void (*sound_manager_volume_changed_cb)(sound_type_e type, unsigned int 
  * @see sound_manager_set_volume()
  * @see sound_manager_get_volume()
  */
-int sound_manager_get_max_volume(sound_type_e type, int *max);
+int sound_manager_get_max_volume (sound_type_e type, int *max);
 
 /**
  * @brief Sets the volume level specified for a particular sound type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @privlevel public
  * @privilege %http://tizen.org/privilege/volume.set
  * @param[in]		type The sound type
@@ -335,11 +314,11 @@ int sound_manager_get_max_volume(sound_type_e type, int *max);
  * @see sound_manager_get_max_volume()
  * @see sound_manager_get_volume()
  */
-int sound_manager_set_volume(sound_type_e type, int volume);
+int sound_manager_set_volume (sound_type_e type, int volume);
 
 /**
  * @brief Gets the volume level specified for a particular sound type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]		type The sound type
  * @param[out]	volume	The current volume level
  * @return @c 0 on success,
@@ -350,11 +329,11 @@ int sound_manager_set_volume(sound_type_e type, int volume);
  * @see sound_manager_get_max_volume()
  * @see sound_manager_set_volume()
  */
-int sound_manager_get_volume(sound_type_e type, int *volume);
+int sound_manager_get_volume (sound_type_e type, int *volume);
 
 /**
  * @brief Sets the type of the sound being currently played.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]		type The sound type to set
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -364,11 +343,11 @@ int sound_manager_get_volume(sound_type_e type, int *volume);
  * @see sound_manager_get_current_sound_type()
  * @see sound_manager_unset_current_sound_type()
  */
-int sound_manager_set_current_sound_type(sound_type_e type);
+int sound_manager_set_current_sound_type (sound_type_e type);
 
 /**
  * @brief Gets the type of the sound being currently played.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[out]	type The current sound type
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -379,11 +358,11 @@ int sound_manager_set_current_sound_type(sound_type_e type);
  * @see sound_manager_set_current_sound_type()
  * @see sound_manager_unset_current_sound_type()
  */
-int sound_manager_get_current_sound_type(sound_type_e *type);
+int sound_manager_get_current_sound_type (sound_type_e *type);
 
 /**
  * @brief Unsets the type of the sound being currently played.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @return @c 0 on success,
  *         otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success
@@ -391,11 +370,11 @@ int sound_manager_get_current_sound_type(sound_type_e *type);
  * @see sound_manager_set_current_sound_type()
  * @see sound_manager_get_current_sound_type()
  */
-int sound_manager_unset_current_sound_type(void);
+int sound_manager_unset_current_sound_type (void);
 
 /**
  * @brief Registers a callback function to be invoked when the volume level is changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	callback	Callback function to indicate change in volume
  * @param[in]	user_data	The user data to be passed to the callback function
  * @return @c 0 on success,
@@ -407,17 +386,17 @@ int sound_manager_unset_current_sound_type(void);
  * @see sound_manager_unset_volume_changed_cb()
  * @see sound_manager_volume_changed_cb()
  */
-int sound_manager_set_volume_changed_cb(sound_manager_volume_changed_cb callback, void *user_data);
+int sound_manager_set_volume_changed_cb (sound_manager_volume_changed_cb callback, void *user_data);
 
 /**
  * @brief Unregisters the volume change callback.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @return 0 on success, otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success
  * @retval #SOUND_MANAGER_ERROR_INTERNAL Internal error inside the sound system
  * @see sound_manager_set_volume_changed_cb()
  */
-int sound_manager_unset_volume_changed_cb(void);
+int sound_manager_unset_volume_changed_cb (void);
 
 /**
  * @}
@@ -430,7 +409,7 @@ int sound_manager_unset_volume_changed_cb(void);
 
 /**
  * @brief Sets the application's sound session type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in] type The session type to set
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -447,11 +426,11 @@ int sound_manager_unset_volume_changed_cb(void);
  * @see sound_manager_set_voip_session_mode()
  * @see sound_manager_get_voip_session_mode()
  */
-int sound_manager_set_session_type(sound_session_type_e type);
+int sound_manager_set_session_type (sound_session_type_e type);
 
 /**
  * @brief Gets the application's sound session type.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in] type The session type
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -465,11 +444,11 @@ int sound_manager_set_session_type(sound_session_type_e type);
  * @see sound_manager_set_voip_session_mode()
  * @see sound_manager_get_voip_session_mode()
  */
-int sound_manager_get_session_type(sound_session_type_e *type);
+int sound_manager_get_session_type (sound_session_type_e *type);
 
 /**
  * @brief Sets the media sound session option.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in] s_option The session option for starting
  * @param[in] d_option The session option for during play
  * @return @c 0 on success,
@@ -478,18 +457,17 @@ int sound_manager_get_session_type(sound_session_type_e *type);
  * @retval #SOUND_MANAGER_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval #SOUND_MANAGER_ERROR_INVALID_OPERATION Invalid operation
  * @retval #SOUND_MANAGER_ERROR_POLICY Noncompliance with the sound system policy
- * @pre Call sound_manager_set_session_type(SOUND_SESSION_TYPE_MEDIA) before calling this function.
  * @see sound_manager_set_session_type()
  * @see sound_manager_get_session_type()
  * @see sound_manager_get_media_session_option()
  * @see sound_manager_set_media_session_resumption_option()
  * @see sound_manager_get_media_session_resumption_option()
  */
-int sound_manager_set_media_session_option(sound_session_option_for_starting_e s_option, sound_session_option_for_during_play_e d_option);
+int sound_manager_set_media_session_option (sound_session_option_for_starting_e s_option, sound_session_option_for_during_play_e d_option);
 
 /**
  * @brief Gets the media sound session option.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[out] s_option The session option for starting
  * @param[out] d_option The session option for during play
  * @return @c 0 on success,
@@ -504,11 +482,11 @@ int sound_manager_set_media_session_option(sound_session_option_for_starting_e s
  * @see sound_manager_set_media_session_resumption_option()
  * @see sound_manager_get_media_session_resumption_option()
  */
-int sound_manager_get_media_session_option(sound_session_option_for_starting_e *s_option, sound_session_option_for_during_play_e *d_option);
+int sound_manager_get_media_session_option (sound_session_option_for_starting_e *s_option, sound_session_option_for_during_play_e *d_option);
 
 /**
  * @brief Sets the media sound session resumption option.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in] option The session resumption option
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -516,18 +494,17 @@ int sound_manager_get_media_session_option(sound_session_option_for_starting_e *
  * @retval #SOUND_MANAGER_ERROR_INVALID_PARAMETER Invalid parameter
  * @retval #SOUND_MANAGER_ERROR_INVALID_OPERATION Invalid operation
  * @retval #SOUND_MANAGER_ERROR_POLICY Noncompliance with the sound system policy
- * @pre Call sound_manager_set_session_type(SOUND_SESSION_TYPE_MEDIA) before calling this function.
  * @see sound_manager_set_session_type()
  * @see sound_manager_get_session_type()
  * @see sound_manager_set_media_session_option()
  * @see sound_manager_get_media_session_option()
  * @see sound_manager_get_media_session_resumption_option()
  */
-int sound_manager_set_media_session_resumption_option(sound_session_option_for_resumption_e option);
+int sound_manager_set_media_session_resumption_option (sound_session_option_for_resumption_e option);
 
 /**
  * @brief Gets the media sound session resumption option.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[out] option The session resumption option
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -541,11 +518,11 @@ int sound_manager_set_media_session_resumption_option(sound_session_option_for_r
  * @see sound_manager_get_media_session_option()
  * @see sound_manager_set_media_session_resumption_option()
  */
-int sound_manager_get_media_session_resumption_option(sound_session_option_for_resumption_e *option);
+int sound_manager_get_media_session_resumption_option (sound_session_option_for_resumption_e *option);
 
 /**
  * @brief Sets the mode of the voip sound session.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in] mode The voip session mode
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -559,11 +536,11 @@ int sound_manager_get_media_session_resumption_option(sound_session_option_for_r
  * @see sound_manager_get_session_type()
  * @see sound_manager_get_voip_session_mode()
 */
-int sound_manager_set_voip_session_mode(sound_session_voip_mode_e mode);
+int sound_manager_set_voip_session_mode (sound_session_voip_mode_e mode);
 
 /**
  * @brief Gets the mode of the voip sound session.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[out] mode The voip session mode
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -577,49 +554,11 @@ int sound_manager_set_voip_session_mode(sound_session_voip_mode_e mode);
  * @see sound_manager_get_session_type()
  * @see sound_manager_set_voip_session_mode()
 */
-int sound_manager_get_voip_session_mode(sound_session_voip_mode_e *mode);
-
-/**
- * @internal
- * @brief Sets the mode of the call sound session.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
- * @param[in] mode The call session mode
- * @return @c 0 on success,
- *         otherwise a negative error value
- * @retval #SOUND_MANAGER_ERROR_NONE Success
- * @retval #SOUND_MANAGER_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval #SOUND_MANAGER_ERROR_NOT_SUPPORTED Not supported
- * @retval #SOUND_MANAGER_ERROR_INTERNAL Internal error inside the sound system
- * @retval #SOUND_MANAGER_ERROR_POLICY Noncompliance with the sound system policy
- * @pre Call sound_manager_set_session_type(SOUND_SESSION_TYPE_CALL) before calling this function.
- * @see sound_manager_set_session_type()
- * @see sound_manager_get_session_type()
- * @see sound_manager_get_call_session_mode()
-*/
-int sound_manager_set_call_session_mode(sound_session_call_mode_e mode);
-
-/**
- * @internal
- * @brief Gets the mode of the call sound session.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
- * @param[out] mode The call session mode
- * @return @c 0 on success,
- *         otherwise a negative error value
- * @retval #SOUND_MANAGER_ERROR_NONE Success
- * @retval #SOUND_MANAGER_ERROR_INVALID_PARAMETER Invalid parameter
- * @retval #SOUND_MANAGER_ERROR_NOT_SUPPORTED Not supported
- * @retval #SOUND_MANAGER_ERROR_INTERNAL Internal error inside the sound system
- * @retval #SOUND_MANAGER_ERROR_POLICY Noncompliance with the sound system policy
- * @pre Call sound_manager_set_session_type(SOUND_SESSION_TYPE_call) before calling this function.
- * @see sound_manager_set_session_type()
- * @see sound_manager_get_session_type()
- * @see sound_manager_set_call_session_mode()
-*/
-int sound_manager_get_call_session_mode(sound_session_call_mode_e *mode);
+int sound_manager_get_voip_session_mode (sound_session_voip_mode_e *mode);
 
 /**
  * @brief Registers a callback function to be invoked when the sound session being played was interrupted.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	callback	The interrupted callback function
  * @param[in]	user_data	The user data to be passed to the callback function
  * @return @c 0 on success,
@@ -631,18 +570,18 @@ int sound_manager_get_call_session_mode(sound_session_call_mode_e *mode);
  * @see sound_manager_unset_session_interrupted_cb()
  * @see sound_session_interrupted_cb()
  */
-int sound_manager_set_session_interrupted_cb(sound_session_interrupted_cb callback, void *user_data);
+int sound_manager_set_session_interrupted_cb (sound_session_interrupted_cb callback, void *user_data);
 
 /**
  * @brief Unregisters the callback function which is called when the sound session being played is interrupted.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @return 0 on success,
  *         otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success
  * @retval #SOUND_MANAGER_ERROR_INTERNAL Internal error inside the sound system
  * @see sound_manager_set_session_interrupted_cb()
  */
-int sound_manager_unset_session_interrupted_cb(void);
+int sound_manager_unset_session_interrupted_cb (void);
 
 /**
  * @}
@@ -655,11 +594,12 @@ int sound_manager_unset_session_interrupted_cb(void);
 
 /**
  * @brief Gets the list consisting of connected devices.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device_mask	The mask value
  * @param[out]	device_list	The list of connected devices
  *
  * @remarks	@a Use sound_manager_get_next_device() to get the first node of the list.
+ * @remarks	@a The value of device_list is unknown when error returned.
  *
  * @return @c 0 on success,
  *         otherwise a negative error value
@@ -675,13 +615,16 @@ int sound_manager_unset_session_interrupted_cb(void);
  * @see sound_manager_get_device_name()
  * @see sound_manager_get_device_state()
  */
-int sound_manager_get_current_device_list(sound_device_mask_e device_mask, sound_device_list_h *device_list);
+int sound_manager_get_current_device_list (sound_device_mask_e device_mask, sound_device_list_h *device_list);
 
 /**
  * @brief Gets the next item of the device list.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device_list	The list of connected devices
  * @param[out]	device	The device item
+ *
+ * @remarks	@a The value of device is unknown when error returned.
+ *
  * @return @c 0 on success,
  *         otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success
@@ -699,9 +642,12 @@ int sound_manager_get_next_device (sound_device_list_h device_list, sound_device
 
 /**
  * @brief Gets the previous item of the device list.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device_list	The list of connected devices
  * @param[out]	device	The device item
+ *
+ * @remarks	@a The value of device is unknown when error returned.
+ *
  * @return @c 0 on success,
  *         otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success
@@ -719,7 +665,7 @@ int sound_manager_get_prev_device (sound_device_list_h device_list, sound_device
 
 /**
  * @brief Gets the type of the device.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device	The device item
  * @param[out]	type	The type of the device
  * @return @c 0 on success,
@@ -738,7 +684,7 @@ int sound_manager_get_device_type (sound_device_h device, sound_device_type_e *t
 
 /**
  * @brief Gets the io direction of the device.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device	The device item
  * @param[out]	io_direction	The io direction of the device
  * @return @c 0 on success,
@@ -757,7 +703,7 @@ int sound_manager_get_device_io_direction (sound_device_h device, sound_device_i
 
 /**
  * @brief Gets the id of the device.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device	The device item
  * @param[out]	id	The id of the device
  * @return @c 0 on success,
@@ -776,7 +722,7 @@ int sound_manager_get_device_id (sound_device_h device, int *id);
 
 /**
  * @brief Gets the name of the device.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device	The device item
  * @param[out]	name	The name of the device
  * @return @c 0 on success,
@@ -796,7 +742,7 @@ int sound_manager_get_device_name (sound_device_h device, char **name);
 
 /**
  * @brief Gets the state of the device.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device	The device item
  * @param[out]	state	The state of the device
  * @return @c 0 on success,
@@ -815,7 +761,7 @@ int sound_manager_get_device_state (sound_device_h device, sound_device_state_e 
 
 /**
  * @brief Registers a callback function to be invoked when the state of connection of a sound device was changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device_mask	The mask value
  * @param[in]	callback	The interrupted callback function
  * @param[in]	user_data	The user data to be passed to the callback function
@@ -835,7 +781,7 @@ int sound_manager_set_device_connected_cb (sound_device_mask_e device_mask, soun
 
 /**
  * @brief Unregisters the callback function which is called when the state of connection of a sound device was changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @return @c 0 on success,
  *         otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success
@@ -846,7 +792,7 @@ int sound_manager_unset_device_connected_cb (void);
 
 /**
  * @brief Registers a callback function to be invoked when the information of a sound device was changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @param[in]	device_mask	The mask value
  * @param[in]	callback	The interrupted callback function
  * @param[in]	user_data	The user data to be passed to the callback function
@@ -863,7 +809,7 @@ int sound_manager_set_device_information_changed_cb (sound_device_mask_e device_
 
 /**
  * @brief Unregisters the callback function which is called when the information of a sound device was changed.
- * @since_tizen @if WEARABLE 2.3.1 @elseif MOBILE 2.3 @endif
+ * @since_tizen @if MOBILE 2.3 @elseif WEARABLE 2.3.1 @endif
  * @return @c 0 on success,
  *         otherwise a negative error value
  * @retval #SOUND_MANAGER_ERROR_NONE Success

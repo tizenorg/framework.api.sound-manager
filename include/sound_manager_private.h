@@ -22,6 +22,8 @@ extern "C"
 {
 #endif
 
+#define LOG_TAG "TIZEN_N_SOUND_MANAGER"
+
 #include <stdio.h>
 #include <limits.h>
 #include <string.h>
@@ -36,8 +38,8 @@ extern "C"
 
 #define SOUND_SESSION_TYPE_DEFAULT SOUND_SESSION_TYPE_MEDIA
 
-typedef enum
-{
+typedef enum {
+	_SESSION_MODE_NONE = -1,                   /**< session mode(voip/call) for default */
 	_SESSION_MODE_RINGTONE = 0,                /**< session mode(voip/call) for ringtone */
 	_SESSION_MODE_VOICE_WITH_BUILTIN_RECEIVER, /**< session mode(voip/call) for during call with built-in receiver */
 	_SESSION_MODE_VOICE_WITH_BUILTIN_SPEAKER,  /**< session mode(voip/call) for during call with built-in speaker */
@@ -66,7 +68,7 @@ typedef struct {
 	sound_device_information_changed_cb user_cb;
 }_device_changed_info_s;
 
-int __convert_sound_manager_error_code(const char *func, int code);
+int __convert_sound_manager_error_code(const char *func, int line, int code);
 
 void __session_interrupt_cb(session_msg_t msg, session_event_t event, void *user_data);
 
