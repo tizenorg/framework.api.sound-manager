@@ -19,6 +19,9 @@
 
 #include <sound_manager.h>
 #include <sound_manager_private.h>
+#include <system_info.h>
+
+#define FEATURE_MICROPHONE          "http://tizen.org/feature/microphone"
 
 typedef struct {
 	void *user_data;
@@ -143,11 +146,20 @@ int sound_manager_set_session_type(sound_session_type_e type)
 	int ret = MM_ERROR_NONE;
 	int cur_session = -1;
 	int new_session = MM_SESSION_TYPE_MEDIA;
+	bool mic_enable = false;
 
 	LOGI(">> enter : type=%d", type);
 
 	if(type < SOUND_SESSION_TYPE_MEDIA || type >  SOUND_SESSION_TYPE_CALL)
 		return __convert_sound_manager_error_code(__func__, MM_ERROR_INVALID_ARGUMENT);
+
+	/* If session type is VOIP but MIC is not enabled, return false */
+	if (type == SOUND_SESSION_TYPE_VOIP) {
+		ret = system_info_get_platform_bool(FEATURE_MICROPHONE, &mic_enable);
+		LOGI("system_info_platform [%s]=[%d], ret[%d]", FEATURE_MICROPHONE, mic_enable, ret);
+		if (ret != SYSTEM_INFO_ERROR_NONE || !mic_enable)
+			return __convert_sound_manager_error_code(__func__, MM_ERROR_NOT_SUPPORT_API);
+	}
 
 	switch(type) {
 	case SOUND_SESSION_TYPE_MEDIA:

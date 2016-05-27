@@ -66,6 +66,10 @@ int __convert_sound_manager_error_code(const char *func, int code) {
 			ret = SOUND_MANAGER_ERROR_NO_PLAYING_SOUND;
 			errorstr = "NO_PLAYING_SOUND";
 			break;
+		case MM_ERROR_NOT_SUPPORT_API:
+			ret = SOUND_MANAGER_ERROR_NOT_SUPPORTED;
+			errorstr = "NOT_SUPPORTED";
+			break;
 	}
 	LOGE("[%s] %s(0x%08x) : core frameworks error code(0x%08x)",func, errorstr, ret, code);
 	return ret;

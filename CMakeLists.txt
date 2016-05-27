@@ -23,7 +23,7 @@ SET(service "media")
 SET(submodule "sound-manager")
 
 # for package file
-SET(dependents "mm-sound dlog capi-base-common mm-session")
+SET(dependents "mm-sound dlog capi-base-common mm-session capi-system-info")
 SET(pc_dependents "capi-base-common")
 
 # for deb
